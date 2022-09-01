@@ -4,89 +4,38 @@ import java.util.Random;
 
 public class Main {
 
-    public static int bossHP = 15000;
-    public static int bossDM = 100;
+    public static int bossHP = 700;
+    public static int bossDM = 50;
     public static String bossDefence = "";
-    public static int[] heroesHP = {250, 260, 245, 270, 210, 185, 200, 450};
-    public static int[] heroesDM = {15, 10, 20, 0, 10, 15, 5, 20};
-    public static String[] heroesType = {"Physical", "Magical", "Kinetic", "Medic", "Lucky", "Berserk", "Thor", "Golem"};
+    public static int[] heroesHP = {250, 260, 245, 270};
+    public static int[] heroesDM = {15, 10, 20, 0};
+    public static String[] heroesType = {"Physical", "Magical", "Kinetic", "Medic"};
     public static int round = 0;
 
-    public static void  heroMedic(){
-        for (int i = 0; i < heroesHP.length ; i++) {
-            if (i == 3){
-                continue;
-            }
-            if (heroesHP[i] > 0 && heroesHP[i] < 100 && heroesHP[3] > 0){
-                heroesHP[i] += 50;
-                System.out.println("Medic HILL - " + heroesType[i]);
-                break;
-            }
-        }
-    }
-
-    public static void heroGolem(){
-        for (int i = 0; i < heroesHP.length; i++) {
-            if (heroesHP[7] > 0){
-                heroesHP[7] -= bossDM * 1 / 5;
-                heroesHP[i] += bossDM * 1 / 5;
-                System.out.println("Golem get: " + bossDM);
-                break;
-            }
-        }
-    }
-    public static void heroLaki() {
-        Random random = new Random();
-        boolean run = random.nextBoolean();
-        for (int i = 0; i < heroesHP.length ; i++){
-            if (heroesHP[5] > 0)
-                if (run){
-                    heroesHP[5] = heroesHP[5] + 90;
-                    System.out.println("Laki dodged damage");
-                    break;
-                }
-        }
-    }
-
-    public static void heroBerserk(){
-
-        for (int i = 0; i < heroesHP.length; i++) {
-            if (heroesHP[5] > 0){
-                heroesHP[5] -= bossDM * 1 / 14;
-                heroesDM[5] += heroesDM[6] + bossDM * 1 / 14;
-                System.out.println("Berserk blocking damage and up damage");
-                break;
-            }
-
-        }
-    }
-
-    public static void heroTor(){
-        Random random = new Random();
-        boolean tor = random.nextBoolean();
-        for (int i = 0; i < heroesHP.length; i++) {
-            if (heroesHP[6] > 0){
-                if(tor){
-                    bossDM = bossDM - bossDM;
-                    System.out.println("The boss is stunned");
-                    break;
-                }else{
-                    bossDM = 60;
+    public static void  heroMedic() {
+        int index = 0;
+        int help = 20;
+        for (String name : heroesType) {
+            if (name.equals("Medic")) {
+                for (int i = 0 ; i < heroesHP.length; i++){
+                    if (heroesHP[i] < 100 && heroesHP[i] > 0 && heroesHP[i] != heroesHP[index] && heroesHP[index] > 0) {
+                        heroesHP[i] += help;
+                        System.out.println("Medic help:  " + heroesType[i]);
+                        break;
+                    }
                 }
             }
+            index++;
         }
-
     }
+
 
     public static void main(String[] args) {
         printStatistics();
         while (!isGameOver()) {
             round();
             heroMedic();
-            heroGolem();
-            heroLaki();
-            heroBerserk();
-            heroTor();
+
         }
     }
 
